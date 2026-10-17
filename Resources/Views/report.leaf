@@ -1,0 +1,284 @@
+#extend("base"):
+#export("content"):
+
+<div class="max-w-3xl mx-auto py-6">
+
+    <!-- ═══════════════════════════════════════════════
+         HEADER / BREADCRUMB
+         ═══════════════════════════════════════════════ -->
+    <div class="mb-8">
+        <!-- Hover: colour + underline reveal -->
+        <a href="/"
+           class="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:underline inline-flex items-center space-x-1 mb-2 transition-colors duration-150">
+            <span>&larr; Return to Home</span>
+        </a>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Submit Incident Report</h1>
+        <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">
+            Provide accurate details regarding the incident. Submissions are processed through our Swift Vapor backend and assigned a unique tracking ID.
+        </p>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════
+         INCIDENT SUBMISSION CARD
+         ═══════════════════════════════════════════════ -->
+    <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/90 dark:border-slate-800 shadow-sm p-6 sm:p-10 transition-colors duration-300">
+        <form action="/report" method="POST" enctype="multipart/form-data" class="space-y-6" id="incidentForm">
+
+            <!-- ─── Field 1: Incident Title ─── -->
+            <div>
+                <label for="title" class="block text-sm font-bold text-slate-800 dark:text-slate-200 mb-1.5">
+                    Incident Title <span class="text-red-500">*</span>
+                </label>
+                <input
+                    type="text"
+                    name="title"
+                    id="title"
+                    required
+                    placeholder="e.g., Stolen Bicycle from Library Racks"
+                    class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700
+                           bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100
+                           placeholder:text-slate-400 dark:placeholder:text-slate-500
+                           focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-blue-500
+                           hover:border-slate-400 dark:hover:border-slate-600
+                           transition-all duration-150"
+                >
+                <p class="mt-1 text-xs text-slate-400 dark:text-slate-500">A clear, concise summary of what occurred.</p>
+            </div>
+
+            <!-- ─── Field 2: Incident Location ─── -->
+            <div>
+                <label for="location" class="block text-sm font-bold text-slate-800 dark:text-slate-200 mb-1.5">
+                    Location / Sector <span class="text-red-500">*</span>
+                </label>
+                <input
+                    type="text"
+                    name="location"
+                    id="location"
+                    required
+                    placeholder="e.g., Central Library, Level 2 West"
+                    class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700
+                           bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100
+                           placeholder:text-slate-400 dark:placeholder:text-slate-500
+                           focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-blue-500
+                           hover:border-slate-400 dark:hover:border-slate-600
+                           transition-all duration-150"
+                >
+
+                <!-- Quick Location Chips — hover: lift + colour shift -->
+                <div class="mt-2 flex flex-wrap items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+                    <span class="font-medium text-slate-400 dark:text-slate-500">Common zones:</span>
+                    <button type="button" onclick="setLocation('Central Library')"
+                            class="px-2.5 py-1 rounded-lg
+                                   bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300
+                                   border border-slate-200 dark:border-slate-700
+                                   hover:bg-blue-50 dark:hover:bg-blue-950/50 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-300 dark:hover:border-blue-700
+                                   hover:shadow-sm hover:-translate-y-0.5
+                                   active:translate-y-0 active:scale-95
+                                   transition-all duration-150">Library</button>
+                    <button type="button" onclick="setLocation('North Parking Lot')"
+                            class="px-2.5 py-1 rounded-lg
+                                   bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300
+                                   border border-slate-200 dark:border-slate-700
+                                   hover:bg-blue-50 dark:hover:bg-blue-950/50 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-300 dark:hover:border-blue-700
+                                   hover:shadow-sm hover:-translate-y-0.5
+                                   active:translate-y-0 active:scale-95
+                                   transition-all duration-150">North Parking</button>
+                    <button type="button" onclick="setLocation('Science Complex')"
+                            class="px-2.5 py-1 rounded-lg
+                                   bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300
+                                   border border-slate-200 dark:border-slate-700
+                                   hover:bg-blue-50 dark:hover:bg-blue-950/50 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-300 dark:hover:border-blue-700
+                                   hover:shadow-sm hover:-translate-y-0.5
+                                   active:translate-y-0 active:scale-95
+                                   transition-all duration-150">Science Block</button>
+                    <button type="button" onclick="setLocation('East Dormitories')"
+                            class="px-2.5 py-1 rounded-lg
+                                   bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300
+                                   border border-slate-200 dark:border-slate-700
+                                   hover:bg-blue-50 dark:hover:bg-blue-950/50 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-300 dark:hover:border-blue-700
+                                   hover:shadow-sm hover:-translate-y-0.5
+                                   active:translate-y-0 active:scale-95
+                                   transition-all duration-150">Dormitories</button>
+                    <button type="button" onclick="setLocation('Main Cafeteria')"
+                            class="px-2.5 py-1 rounded-lg
+                                   bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300
+                                   border border-slate-200 dark:border-slate-700
+                                   hover:bg-blue-50 dark:hover:bg-blue-950/50 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-300 dark:hover:border-blue-700
+                                   hover:shadow-sm hover:-translate-y-0.5
+                                   active:translate-y-0 active:scale-95
+                                   transition-all duration-150">Cafeteria</button>
+                </div>
+            </div>
+
+            <!-- ─── Field 3: Detailed Description ─── -->
+            <div>
+                <label for="description" class="block text-sm font-bold text-slate-800 dark:text-slate-200 mb-1.5">
+                    Detailed Description <span class="text-red-500">*</span>
+                </label>
+                <textarea
+                    name="description"
+                    id="description"
+                    rows="5"
+                    required
+                    placeholder="Describe sequence of events, suspect appearances, identifying markers, witnesses, or exact time of incident..."
+                    class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700
+                           bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100
+                           placeholder:text-slate-400 dark:placeholder:text-slate-500
+                           focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-blue-500
+                           hover:border-slate-400 dark:hover:border-slate-600
+                           transition-all duration-150 resize-y"
+                ></textarea>
+                <p class="mt-1 text-xs text-slate-400 dark:text-slate-500">Be as descriptive as possible to aid investigating personnel.</p>
+            </div>
+
+            <!-- ─── Field 4: Multipart Media Upload ─── -->
+            <div>
+                <label class="block text-sm font-bold text-slate-800 dark:text-slate-200 mb-1.5">
+                    Supporting Photo / Video Evidence
+                    <span class="font-normal text-slate-400 dark:text-slate-500 text-xs ml-1">(Optional &bull; Max 25 MB)</span>
+                </label>
+
+                <!-- Drag-and-drop zone — border and bg change on hover -->
+                <div class="relative border-2 border-dashed border-slate-300 dark:border-slate-700
+                            hover:border-blue-500 dark:hover:border-blue-500
+                            rounded-2xl p-6 text-center
+                            bg-slate-50/50 dark:bg-slate-800/30 hover:bg-blue-50/20 dark:hover:bg-blue-950/10
+                            transition-all duration-200 group">
+                    <input
+                        type="file"
+                        name="media"
+                        id="mediaUpload"
+                        accept="image/*,video/*"
+                        onchange="handleFileSelect(event)"
+                        class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                    >
+
+                    <!-- Default Upload Prompt -->
+                    <div id="uploadPrompt" class="space-y-2 pointer-events-none">
+                        <div class="w-12 h-12 mx-auto rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 flex items-center justify-center group-hover:scale-110 group-hover:shadow-md group-hover:shadow-blue-500/20 transition-all duration-200">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <div class="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                            Click to upload or drag &amp; drop media
+                        </div>
+                        <p class="text-xs text-slate-400 dark:text-slate-500">
+                            Supported: JPG, PNG, GIF, MP4, MOV, WEBM (Saved to <code class="bg-slate-200/80 dark:bg-slate-700/80 px-1 py-0.5 rounded text-[11px]">Public/uploads</code>)
+                        </p>
+                    </div>
+
+                    <!-- Client-Side File Preview -->
+                    <div id="filePreviewContainer" class="hidden pointer-events-auto">
+                        <div class="inline-flex items-center space-x-3 p-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm max-w-sm mx-auto">
+                            <img id="imagePreview" src="" alt="Preview" class="hidden w-16 h-16 object-cover rounded-lg border border-slate-200 dark:border-slate-700">
+                            <video id="videoPreview" src="" class="hidden w-16 h-16 object-cover rounded-lg border border-slate-200 dark:border-slate-700" controls></video>
+                            <div class="text-left overflow-hidden">
+                                <p id="previewFilename" class="text-xs font-bold text-slate-800 dark:text-slate-200 truncate"></p>
+                                <p id="previewFilesize" class="text-[11px] text-slate-400 dark:text-slate-500"></p>
+                                <!-- Remove button: red on hover -->
+                                <button type="button" onclick="clearFileSelection()"
+                                        class="mt-1 text-xs text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-semibold hover:underline transition-colors duration-150">
+                                    Remove file
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── Field 5: Affirmation Checkbox ─── -->
+            <div class="pt-2">
+                <label class="flex items-start space-x-3 cursor-pointer group">
+                    <input
+                        type="checkbox"
+                        name="affirmation"
+                        required
+                        class="mt-1 w-4 h-4 rounded text-blue-600 border-slate-300 dark:border-slate-600
+                               focus:ring-blue-500 cursor-pointer accent-blue-600"
+                    >
+                    <span class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed group-hover:text-slate-800 dark:group-hover:text-slate-100 transition-colors duration-150">
+                        I confirm that all details provided in this report are accurate and truthful. I understand this report will enter the Swift case tracking database with status <span class="font-bold text-amber-600 dark:text-amber-400">Pending</span>.
+                    </span>
+                </label>
+            </div>
+
+            <!-- ─── Form Action Buttons ─── -->
+            <div class="pt-4 flex items-center justify-end space-x-4">
+                <!-- Cancel: subtle hover -->
+                <a href="/"
+                   class="px-5 py-2.5 rounded-xl text-sm font-semibold
+                          text-slate-600 dark:text-slate-300
+                          hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-800 dark:hover:text-white
+                          active:scale-95
+                          transition-all duration-150">
+                    Cancel
+                </a>
+                <!-- Submit: lift + glow on hover -->
+                <button
+                    type="submit"
+                    class="inline-flex items-center space-x-2 px-6 py-3 rounded-xl text-sm font-bold text-white
+                           bg-gradient-to-r from-red-600 to-rose-600
+                           hover:from-red-500 hover:to-rose-500
+                           shadow-lg shadow-red-500/25 hover:shadow-xl hover:shadow-red-500/40
+                           hover:-translate-y-0.5
+                           active:translate-y-0 active:scale-95
+                           transition-all duration-200"
+                >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    <span>Submit Crime Report</span>
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+<!-- Quick-fill and file-preview scripts -->
+<script>
+    function setLocation(loc) {
+        document.getElementById('location').value = loc;
+    }
+
+    function handleFileSelect(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const prompt    = document.getElementById('uploadPrompt');
+        const container = document.getElementById('filePreviewContainer');
+        const imgPrev   = document.getElementById('imagePreview');
+        const vidPrev   = document.getElementById('videoPreview');
+        const nameEl    = document.getElementById('previewFilename');
+        const sizeEl    = document.getElementById('previewFilesize');
+
+        prompt.classList.add('hidden');
+        container.classList.remove('hidden');
+
+        nameEl.innerText = file.name;
+        sizeEl.innerText = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
+
+        const reader = new FileReader();
+        if (file.type.startsWith('image/')) {
+            vidPrev.classList.add('hidden');
+            imgPrev.classList.remove('hidden');
+            reader.onload = e => { imgPrev.src = e.target.result; };
+            reader.readAsDataURL(file);
+        } else if (file.type.startsWith('video/')) {
+            imgPrev.classList.add('hidden');
+            vidPrev.classList.remove('hidden');
+            vidPrev.src = URL.createObjectURL(file);
+        }
+    }
+
+    function clearFileSelection() {
+        document.getElementById('mediaUpload').value = '';
+        document.getElementById('uploadPrompt').classList.remove('hidden');
+        document.getElementById('filePreviewContainer').classList.add('hidden');
+    }
+</script>
+
+#endexport
+#endextend

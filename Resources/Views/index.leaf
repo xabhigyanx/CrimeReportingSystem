@@ -1,0 +1,252 @@
+#extend("base"):
+#export("content"):
+
+<!-- ═══════════════════════════════════════════════════
+     HERO SECTION
+     ═══════════════════════════════════════════════════ -->
+<section class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white shadow-xl mb-10">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-700/20 via-transparent to-transparent"></div>
+    <div class="relative px-6 py-12 md:py-20 md:px-12 max-w-4xl">
+        <!-- Live pulse badge -->
+        <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-400/20 text-blue-300 text-xs font-semibold uppercase tracking-wider mb-6">
+            <span class="w-2 h-2 rounded-full bg-blue-400 animate-ping"></span>
+            <span>Community Crime Watch &amp; Safety Grid</span>
+        </div>
+        <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
+            Transparent Crime Reporting &amp; Real-Time Case Tracking.
+        </h1>
+        <p class="mt-4 text-base sm:text-lg text-slate-300 leading-relaxed max-w-2xl">
+            A Swift full-stack application built for transparent incident reporting, instant status updates, and proactive community hazard alerts.
+        </p>
+
+        <!-- CTA Buttons — hover: lift + glow, active: press-down scale -->
+        <div class="mt-8 flex flex-wrap gap-4">
+            <a href="/report"
+               class="inline-flex items-center space-x-2 px-6 py-3.5 rounded-xl text-sm font-bold text-white
+                      bg-red-600 hover:bg-red-500
+                      shadow-lg shadow-red-600/30 hover:shadow-xl hover:shadow-red-500/50
+                      hover:-translate-y-1
+                      active:translate-y-0 active:scale-95
+                      transition-all duration-200 ease-out">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                </svg>
+                <span>Submit Incident Report</span>
+            </a>
+
+            <a href="/dashboard"
+               class="inline-flex items-center space-x-2 px-6 py-3.5 rounded-xl text-sm font-bold text-slate-200
+                      bg-white/10 hover:bg-white/25
+                      border border-white/10 hover:border-white/30
+                      backdrop-blur-md
+                      hover:-translate-y-1 hover:shadow-lg hover:shadow-white/10
+                      active:translate-y-0 active:scale-95
+                      transition-all duration-200 ease-out">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                </svg>
+                <span>Live Case Dashboard</span>
+            </a>
+
+            <a href="/concerns"
+               class="inline-flex items-center space-x-2 px-6 py-3.5 rounded-xl text-sm font-bold
+                      text-blue-300 hover:text-white hover:bg-blue-700/40
+                      hover:-translate-y-0.5
+                      active:translate-y-0 active:scale-95
+                      transition-all duration-200 ease-out">
+                <span>Community Alerts &rarr;</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     LIVE METRICS GRID
+     ═══════════════════════════════════════════════════ -->
+<section class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12">
+
+    <!-- Stat 1: Total Reports -->
+    <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-default">
+        <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Total Reports</span>
+            <span class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+            </span>
+        </div>
+        <p class="mt-4 text-3xl font-extrabold text-slate-900 dark:text-white">#(stats.total)</p>
+        <p class="mt-1 text-xs text-slate-400 dark:text-slate-500">All recorded submissions</p>
+    </div>
+
+    <!-- Stat 2: Pending -->
+    <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-amber-200/80 dark:border-amber-800/50 shadow-sm hover:shadow-md hover:border-amber-400 dark:hover:border-amber-600 hover:-translate-y-0.5 transition-all duration-200 cursor-default">
+        <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wider">Pending Review</span>
+            <span class="p-2 rounded-xl bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </span>
+        </div>
+        <p class="mt-4 text-3xl font-extrabold text-amber-600 dark:text-amber-400">#(stats.pending)</p>
+        <p class="mt-1 text-xs text-slate-400 dark:text-slate-500">Awaiting officer assignment</p>
+    </div>
+
+    <!-- Stat 3: Under Investigation -->
+    <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-blue-200/80 dark:border-blue-800/50 shadow-sm hover:shadow-md hover:border-blue-400 dark:hover:border-blue-600 hover:-translate-y-0.5 transition-all duration-200 cursor-default">
+        <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-blue-700 dark:text-blue-400 uppercase tracking-wider">Investigating</span>
+            <span class="p-2 rounded-xl bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+            </span>
+        </div>
+        <p class="mt-4 text-3xl font-extrabold text-blue-600 dark:text-blue-400">#(stats.investigating)</p>
+        <p class="mt-1 text-xs text-slate-400 dark:text-slate-500">Active inquiries underway</p>
+    </div>
+
+    <!-- Stat 4: Resolved -->
+    <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-emerald-200/80 dark:border-emerald-800/50 shadow-sm hover:shadow-md hover:border-emerald-400 dark:hover:border-emerald-600 hover:-translate-y-0.5 transition-all duration-200 cursor-default">
+        <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">Resolved</span>
+            <span class="p-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </span>
+        </div>
+        <p class="mt-4 text-3xl font-extrabold text-emerald-600 dark:text-emerald-400">#(stats.resolved)</p>
+        <p class="mt-1 text-xs text-slate-400 dark:text-slate-500">Cases closed &amp; verified</p>
+    </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     2-COLUMN CONTENT GRID
+     ═══════════════════════════════════════════════════ -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+    <!-- Left Column: Recent Crime Reports (8 cols) -->
+    <div class="lg:col-span-8 space-y-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight">Recent Incident Reports</h2>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Latest cases recorded across campus sectors</p>
+            </div>
+            <!-- Link with hover underline + color shift -->
+            <a href="/dashboard"
+               class="text-xs font-bold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 flex items-center space-x-1 hover:underline transition-colors duration-150">
+                <span>View Full Dashboard</span>
+                <span>&rarr;</span>
+            </a>
+        </div>
+
+        <div class="space-y-4">
+            #for(report in recentReports):
+            <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-700/80 hover:border-blue-400 dark:hover:border-blue-600 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                <div class="space-y-2 flex-1">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <!-- Status Badge -->
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold border #(report.statusBadgeClass)">
+                            #(report.status.rawValue)
+                        </span>
+                        <!-- Location Pin -->
+                        <span class="inline-flex items-center text-xs text-slate-500 dark:text-slate-400 space-x-1">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            <span>#(report.location)</span>
+                        </span>
+                        #if(report.mediaPath):
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold bg-purple-50 dark:bg-purple-950/50 text-purple-700 dark:text-purple-400 border border-purple-200 dark:border-purple-800">
+                            Evidence Attached
+                        </span>
+                        #endif
+                    </div>
+                    <h3 class="text-base font-bold text-slate-900 dark:text-white">#(report.title)</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-300 line-clamp-2 leading-relaxed">#(report.description)</p>
+                    <div class="pt-2 flex items-center justify-between text-xs text-slate-400 dark:text-slate-500">
+                        <span>Reported: #(report.formattedDate)</span>
+                    </div>
+                </div>
+
+                #if(report.mediaPath):
+                <div class="sm:w-28 sm:h-24 w-full h-40 flex-shrink-0 rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                    #if(report.mediaType == "video"):
+                    <div class="w-full h-full flex flex-col items-center justify-center bg-slate-800 dark:bg-slate-950 text-white text-xs">
+                        <svg class="w-8 h-8 text-blue-400 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span>Video Clip</span>
+                    </div>
+                    #else:
+                    <img src="#(report.mediaPath)" alt="Evidence" class="w-full h-full object-cover hover:scale-105 transition-transform duration-200" loading="lazy">
+                    #endif
+                </div>
+                #endif
+            </div>
+            #endfor
+        </div>
+    </div>
+
+    <!-- Right Column: Community Safety Alerts (4 cols) -->
+    <div class="lg:col-span-4 space-y-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight">Community Safety Feed</h2>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Public alerts &amp; hazard warnings</p>
+            </div>
+            <a href="/concerns"
+               class="text-xs font-bold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:underline transition-colors duration-150">
+                All Alerts &rarr;
+            </a>
+        </div>
+
+        <div class="space-y-4">
+            #for(concern in recentConcerns):
+            <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 space-y-3">
+                <div class="flex items-center justify-between">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold border #(concern.urgencyBadgeClass)">
+                        Urgency: #(concern.urgencyLevel)
+                    </span>
+                    <span class="text-[11px] text-slate-400 dark:text-slate-500">#(concern.formattedDate)</span>
+                </div>
+                <div class="text-xs font-bold text-blue-700 dark:text-blue-400 flex items-center space-x-1">
+                    <svg class="w-3.5 h-3.5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>#(concern.area)</span>
+                </div>
+                <p class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">#(concern.concernText)</p>
+                <div class="text-xs text-slate-400 dark:text-slate-500 border-t border-slate-100 dark:border-slate-800 pt-2">
+                    Reported by: <span class="font-medium text-slate-600 dark:text-slate-300">#(concern.authorName)</span>
+                </div>
+            </div>
+            #endfor
+
+            <!-- CTA Card -->
+            <div class="p-4 rounded-2xl bg-blue-50 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900 text-center">
+                <h3 class="text-sm font-bold text-blue-900 dark:text-blue-300">Notice a Safety Hazard?</h3>
+                <p class="mt-1 text-xs text-blue-700 dark:text-blue-400">Help keep campus safe by reporting lighting issues, obstacles, or suspicious patterns.</p>
+                <!-- Hover: lift + glow -->
+                <a href="/concerns"
+                   class="mt-3 inline-block px-4 py-2 rounded-xl text-xs font-bold text-white
+                          bg-blue-600 hover:bg-blue-500
+                          shadow-sm hover:shadow-md hover:shadow-blue-500/30
+                          hover:-translate-y-0.5
+                          active:translate-y-0 active:scale-95
+                          transition-all duration-200">
+                    Post a Safety Alert
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+#endexport
+#endextend

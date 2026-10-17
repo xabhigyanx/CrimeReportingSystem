@@ -1,0 +1,15 @@
+.build/
+.swiftpm/
+*.xcodeproj
+*.xcworkspace
+db.sqlite
+db.sqlite-wal
+db.sqlite-shm
+Public/uploads/*
+!Public/uploads/.gitkeep
+.git/
+.gitignore
+Dockerfile
+docker-compose.yml
+README.md
+

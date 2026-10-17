@@ -1,0 +1,229 @@
+#extend("base"):
+#export("content"):
+
+<div class="space-y-8 max-w-5xl mx-auto">
+
+    <!-- ═══════════════════════════════════════════════════
+         HEADER
+         ═══════════════════════════════════════════════════ -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Community Safety Feed</h1>
+            <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                A public bulletin where residents and students can highlight hazards, broken infrastructure, and safety warnings.
+            </p>
+        </div>
+        <div class="flex items-center space-x-3">
+            <!-- Raise Alert CTA — lift + glow hover -->
+            <a href="#raiseAlert"
+               class="inline-flex items-center space-x-2 px-4 py-2.5 rounded-xl text-sm font-bold text-white
+                      bg-blue-600 hover:bg-blue-500
+                      shadow-md shadow-blue-500/25 hover:shadow-lg hover:shadow-blue-500/40
+                      hover:-translate-y-0.5
+                      active:translate-y-0 active:scale-95
+                      transition-all duration-200">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                </svg>
+                <span>Raise Safety Alert</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════
+         ALERT METRICS SUMMARY
+         ═══════════════════════════════════════════════════ -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-between cursor-default">
+            <div>
+                <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Total Active Alerts</p>
+                <p class="text-3xl font-black text-slate-900 dark:text-white mt-1">#(totalCount)</p>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/>
+                </svg>
+            </div>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-rose-200 dark:border-rose-900/50 shadow-sm hover:shadow-md hover:border-rose-400 dark:hover:border-rose-700 hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-between cursor-default">
+            <div>
+                <p class="text-xs font-bold text-rose-600 dark:text-rose-400 uppercase tracking-wider">High Urgency Alerts</p>
+                <p class="text-3xl font-black text-rose-600 dark:text-rose-400 mt-1">#(highUrgencyCount)</p>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-rose-50 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400 flex items-center justify-center">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════
+         2-COLUMN: FORM (left) + FEED (right)
+         ═══════════════════════════════════════════════════ -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+        <!-- ── Post Safety Alert Form (5 cols, sticky) ── -->
+        <div id="raiseAlert" class="lg:col-span-5 bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm sticky top-24 transition-colors duration-300">
+            <div class="flex items-center space-x-2 mb-4">
+                <div class="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-base font-bold text-slate-900 dark:text-white">Post a Safety Alert</h2>
+                    <p class="text-xs text-slate-400 dark:text-slate-500">Notifies the community and facilities</p>
+                </div>
+            </div>
+
+            <form action="/concerns" method="POST" class="space-y-4">
+
+                <!-- Reporter Name -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Your Name / Title</label>
+                    <input
+                        type="text"
+                        name="authorName"
+                        placeholder="Leave blank for 'Anonymous Citizen'"
+                        class="w-full px-3.5 py-2.5 rounded-xl
+                               border border-slate-300 dark:border-slate-700
+                               bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100
+                               placeholder:text-slate-400 dark:placeholder:text-slate-500
+                               focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-blue-500
+                               hover:border-slate-400 dark:hover:border-slate-600
+                               text-xs transition-all duration-150"
+                    >
+                </div>
+
+                <!-- Area / Location -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                        Specific Area / Landmark <span class="text-red-500">*</span>
+                    </label>
+                    <input
+                        type="text"
+                        name="area"
+                        required
+                        placeholder="e.g., North Walkway near Sports Complex"
+                        class="w-full px-3.5 py-2.5 rounded-xl
+                               border border-slate-300 dark:border-slate-700
+                               bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100
+                               placeholder:text-slate-400 dark:placeholder:text-slate-500
+                               focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-blue-500
+                               hover:border-slate-400 dark:hover:border-slate-600
+                               text-xs transition-all duration-150"
+                    >
+                </div>
+
+                <!-- Urgency Level Radio Buttons — hover: ring + bg shift -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Severity / Urgency</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <label class="flex items-center justify-center p-2 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-medium cursor-pointer
+                                      text-slate-600 dark:text-slate-300
+                                      hover:bg-emerald-50 dark:hover:bg-emerald-950/30 hover:border-emerald-400 dark:hover:border-emerald-700 hover:text-emerald-700 dark:hover:text-emerald-400
+                                      has-[:checked]:border-emerald-500 has-[:checked]:bg-emerald-50 dark:has-[:checked]:bg-emerald-950/50 has-[:checked]:text-emerald-700 dark:has-[:checked]:text-emerald-400
+                                      transition-all duration-150">
+                            <input type="radio" name="urgencyLevel" value="Low" class="sr-only">
+                            <span>Low</span>
+                        </label>
+                        <label class="flex items-center justify-center p-2 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-medium cursor-pointer
+                                      text-slate-600 dark:text-slate-300
+                                      hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 dark:hover:border-amber-700 hover:text-amber-700 dark:hover:text-amber-400
+                                      has-[:checked]:border-amber-500 has-[:checked]:bg-amber-50 dark:has-[:checked]:bg-amber-950/50 has-[:checked]:text-amber-700 dark:has-[:checked]:text-amber-400
+                                      transition-all duration-150">
+                            <input type="radio" name="urgencyLevel" value="Medium" checked class="sr-only">
+                            <span>Medium</span>
+                        </label>
+                        <label class="flex items-center justify-center p-2 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-medium cursor-pointer
+                                      text-slate-600 dark:text-slate-300
+                                      hover:bg-rose-50 dark:hover:bg-rose-950/30 hover:border-rose-400 dark:hover:border-rose-700 hover:text-rose-700 dark:hover:text-rose-400
+                                      has-[:checked]:border-rose-500 has-[:checked]:bg-rose-50 dark:has-[:checked]:bg-rose-950/50 has-[:checked]:text-rose-700 dark:has-[:checked]:text-rose-400
+                                      transition-all duration-150">
+                            <input type="radio" name="urgencyLevel" value="High" class="sr-only">
+                            <span>High</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Concern Description -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                        Concern Description <span class="text-red-500">*</span>
+                    </label>
+                    <textarea
+                        name="concernText"
+                        rows="3"
+                        required
+                        placeholder="Detail the safety hazard (e.g., poor lighting, slippery surface, unmonitored exit)..."
+                        class="w-full px-3.5 py-2.5 rounded-xl
+                               border border-slate-300 dark:border-slate-700
+                               bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100
+                               placeholder:text-slate-400 dark:placeholder:text-slate-500
+                               focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-blue-500
+                               hover:border-slate-400 dark:hover:border-slate-600
+                               text-xs resize-none transition-all duration-150"
+                    ></textarea>
+                </div>
+
+                <!-- Submit Button — lift + glow hover -->
+                <button
+                    type="submit"
+                    class="w-full py-2.5 rounded-xl text-xs font-bold text-white
+                           bg-blue-600 hover:bg-blue-500
+                           shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/35
+                           hover:-translate-y-0.5
+                           active:translate-y-0 active:scale-95
+                           transition-all duration-200"
+                >
+                    Post Safety Concern
+                </button>
+            </form>
+        </div>
+
+        <!-- ── Community Feed Stream (7 cols) ── -->
+        <div class="lg:col-span-7 space-y-4">
+            <h2 class="text-lg font-bold text-slate-900 dark:text-white tracking-tight">Active Community Notices</h2>
+
+            #if(count(concerns) == 0):
+            <div class="p-8 text-center bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 transition-colors duration-300">
+                <p class="text-sm font-semibold text-slate-600 dark:text-slate-300">No safety concerns reported yet.</p>
+                <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">Be the first to post a community alert using the form.</p>
+            </div>
+            #else:
+            #for(item in concerns):
+            <!-- Feed card: border + shadow on hover -->
+            <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-slate-400 dark:hover:border-slate-600 hover:-translate-y-0.5 transition-all duration-200 space-y-3">
+                <div class="flex items-center justify-between">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold border #(item.urgencyBadgeClass)">
+                        Urgency: #(item.urgencyLevel)
+                    </span>
+                    <span class="text-xs text-slate-400 dark:text-slate-500">#(item.formattedDate)</span>
+                </div>
+
+                <div class="text-xs font-bold text-blue-700 dark:text-blue-400 flex items-center space-x-1.5">
+                    <svg class="w-3.5 h-3.5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>#(item.area)</span>
+                </div>
+
+                <p class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">#(item.concernText)</p>
+
+                <div class="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-400 dark:text-slate-500">
+                    <span>Reported by: <span class="font-semibold text-slate-700 dark:text-slate-300">#(item.authorName)</span></span>
+                    <span class="font-mono text-[10px]">ID: #(item.id)</span>
+                </div>
+            </div>
+            #endfor
+            #endif
+        </div>
+
+    </div>
+
+</div>
+
+#endexport
+#endextend

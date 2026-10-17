@@ -1,0 +1,311 @@
+#extend("base"):
+#export("content"):
+
+<div class="space-y-8">
+
+    <!-- ═══════════════════════════════════════════════════
+         DASHBOARD HEADER
+         ═══════════════════════════════════════════════════ -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Case Tracking Dashboard</h1>
+            <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                Monitor reported incidents, review evidence media, and manage real-time case investigation status.
+            </p>
+        </div>
+        <div class="flex items-center space-x-3">
+            <!-- New Incident CTA — lift + glow hover -->
+            <a href="/report"
+               class="inline-flex items-center space-x-2 px-4 py-2.5 rounded-xl text-sm font-bold text-white
+                      bg-red-600 hover:bg-red-500
+                      shadow-md shadow-red-600/20 hover:shadow-lg hover:shadow-red-500/40
+                      hover:-translate-y-0.5
+                      active:translate-y-0 active:scale-95
+                      transition-all duration-200">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                </svg>
+                <span>New Incident Report</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════
+         QUICK METRICS BAR — clickable filter cards
+         ═══════════════════════════════════════════════════ -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <a href="/dashboard?status=all"
+           class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800
+                  shadow-sm hover:border-slate-400 dark:hover:border-slate-600
+                  hover:shadow-md hover:-translate-y-0.5
+                  active:translate-y-0 active:scale-95
+                  transition-all duration-200 flex items-center justify-between">
+            <div>
+                <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase">Total Incidents</p>
+                <p class="text-2xl font-black text-slate-900 dark:text-white mt-1">#(stats.total)</p>
+            </div>
+            <span class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 flex items-center justify-center font-bold text-xs">ALL</span>
+        </a>
+
+        <a href="/dashboard?status=Pending"
+           class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-amber-200 dark:border-amber-900/50
+                  shadow-sm hover:border-amber-400 dark:hover:border-amber-600
+                  hover:shadow-md hover:-translate-y-0.5
+                  active:translate-y-0 active:scale-95
+                  transition-all duration-200 flex items-center justify-between">
+            <div>
+                <p class="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase">Pending</p>
+                <p class="text-2xl font-black text-amber-600 dark:text-amber-400 mt-1">#(stats.pending)</p>
+            </div>
+            <span class="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold text-xs">PND</span>
+        </a>
+
+        <a href="/dashboard?status=Under%20Investigation"
+           class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-blue-200 dark:border-blue-900/50
+                  shadow-sm hover:border-blue-400 dark:hover:border-blue-600
+                  hover:shadow-md hover:-translate-y-0.5
+                  active:translate-y-0 active:scale-95
+                  transition-all duration-200 flex items-center justify-between">
+            <div>
+                <p class="text-xs font-bold text-blue-700 dark:text-blue-400 uppercase">Investigating</p>
+                <p class="text-2xl font-black text-blue-600 dark:text-blue-400 mt-1">#(stats.investigating)</p>
+            </div>
+            <span class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-xs">INV</span>
+        </a>
+
+        <a href="/dashboard?status=Resolved"
+           class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-emerald-200 dark:border-emerald-900/50
+                  shadow-sm hover:border-emerald-400 dark:hover:border-emerald-600
+                  hover:shadow-md hover:-translate-y-0.5
+                  active:translate-y-0 active:scale-95
+                  transition-all duration-200 flex items-center justify-between">
+            <div>
+                <p class="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase">Resolved</p>
+                <p class="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1">#(stats.resolved)</p>
+            </div>
+            <span class="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-xs">RES</span>
+        </a>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════
+         FILTER & SEARCH CONTROLS
+         ═══════════════════════════════════════════════════ -->
+    <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4 transition-colors duration-300">
+        <!-- Status Filter Tabs -->
+        <div class="flex items-center space-x-1 sm:space-x-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0">
+            <a href="/dashboard?status=all"
+               class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all duration-150 hover:scale-105 active:scale-95
+                      #if(selectedStatus == "all"): bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900
+                      #else: bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 #endif">
+                All Cases (#(stats.total))
+            </a>
+            <a href="/dashboard?status=Pending"
+               class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all duration-150 hover:scale-105 active:scale-95
+                      #if(selectedStatus == "Pending"): bg-amber-600 text-white
+                      #else: bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/50 #endif">
+                Pending (#(stats.pending))
+            </a>
+            <a href="/dashboard?status=Under Investigation"
+               class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all duration-150 hover:scale-105 active:scale-95
+                      #if(selectedStatus == "Under Investigation"): bg-blue-600 text-white
+                      #else: bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50 #endif">
+                Investigating (#(stats.investigating))
+            </a>
+            <a href="/dashboard?status=Resolved"
+               class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all duration-150 hover:scale-105 active:scale-95
+                      #if(selectedStatus == "Resolved"): bg-emerald-600 text-white
+                      #else: bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 #endif">
+                Resolved (#(stats.resolved))
+            </a>
+        </div>
+
+        <!-- Search Input + Button -->
+        <form action="/dashboard" method="GET" class="w-full md:w-72 flex items-center space-x-2">
+            <div class="relative w-full">
+                <input
+                    type="text"
+                    name="q"
+                    value="#(searchQuery)"
+                    placeholder="Search title, location..."
+                    class="w-full pl-9 pr-4 py-2 rounded-xl text-xs
+                           border border-slate-300 dark:border-slate-700
+                           bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100
+                           placeholder:text-slate-400 dark:placeholder:text-slate-500
+                           focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-blue-500
+                           hover:border-slate-400 dark:hover:border-slate-600
+                           transition-all duration-150"
+                >
+                <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+            </div>
+            #if(selectedStatus):
+            <input type="hidden" name="status" value="#(selectedStatus)">
+            #endif
+            <!-- Search button: hover lift + colour -->
+            <button type="submit"
+                    class="px-3 py-2 rounded-xl text-xs font-bold
+                           bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300
+                           hover:bg-blue-600 hover:text-white dark:hover:bg-blue-600 dark:hover:text-white
+                           hover:shadow-md hover:shadow-blue-500/20
+                           hover:-translate-y-0.5
+                           active:translate-y-0 active:scale-95
+                           transition-all duration-200">
+                Search
+            </button>
+        </form>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════
+         INCIDENTS TABLE
+         ═══════════════════════════════════════════════════ -->
+    <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/90 dark:border-slate-800 shadow-sm overflow-hidden transition-colors duration-300">
+        #if(count(reports) == 0):
+        <div class="py-16 text-center">
+            <div class="w-14 h-14 mx-auto rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 flex items-center justify-center mb-3">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+            </div>
+            <h3 class="text-base font-bold text-slate-800 dark:text-slate-200">No incident reports match this criteria</h3>
+            <p class="mt-1 text-xs text-slate-400 dark:text-slate-500">Try adjusting your filter or search query.</p>
+            <!-- Reset link with hover glow -->
+            <a href="/dashboard"
+               class="mt-4 inline-block px-4 py-2 rounded-xl text-xs font-bold
+                      text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/50
+                      hover:bg-blue-100 dark:hover:bg-blue-900/50
+                      hover:shadow-md hover:shadow-blue-500/20
+                      hover:-translate-y-0.5
+                      active:translate-y-0 active:scale-95
+                      transition-all duration-200">
+                Reset All Filters
+            </a>
+        </div>
+        #else:
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="border-b border-slate-200 dark:border-slate-800 bg-slate-50/75 dark:bg-slate-800/50 text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                        <th class="py-4 px-6">Incident Case</th>
+                        <th class="py-4 px-6">Location</th>
+                        <th class="py-4 px-6">Status</th>
+                        <th class="py-4 px-6">Evidence Media</th>
+                        <th class="py-4 px-6">Reported At</th>
+                        <th class="py-4 px-6 text-right">Update Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800 text-sm">
+                    #for(report in reports):
+                    <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors duration-150">
+                        <!-- Incident Info -->
+                        <td class="py-4 px-6 max-w-xs">
+                            <div class="font-bold text-slate-900 dark:text-slate-100 text-sm">#(report.title)</div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 mt-0.5 leading-relaxed">#(report.description)</div>
+                            <div class="text-[10px] text-slate-400 dark:text-slate-500 font-mono mt-1">ID: #(report.id)</div>
+                        </td>
+
+                        <!-- Location -->
+                        <td class="py-4 px-6 whitespace-nowrap">
+                            <div class="flex items-center space-x-1.5 text-xs text-slate-700 dark:text-slate-300 font-medium">
+                                <svg class="w-4 h-4 text-blue-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                                </svg>
+                                <span>#(report.location)</span>
+                            </div>
+                        </td>
+
+                        <!-- Status Badge -->
+                        <td class="py-4 px-6 whitespace-nowrap">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold border #(report.statusBadgeClass)">
+                                #(report.status.rawValue)
+                            </span>
+                        </td>
+
+                        <!-- Evidence Media -->
+                        <td class="py-4 px-6 whitespace-nowrap">
+                            #if(report.mediaPath):
+                            <div class="flex items-center space-x-2">
+                                #if(report.mediaType == "video"):
+                                <!-- Video link: hover lift + border glow -->
+                                <a href="#(report.mediaPath)" target="_blank"
+                                   class="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-semibold
+                                          bg-indigo-50 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-400
+                                          border border-indigo-200 dark:border-indigo-800
+                                          hover:bg-indigo-100 dark:hover:bg-indigo-900/50 hover:border-indigo-400 dark:hover:border-indigo-600
+                                          hover:-translate-y-0.5 hover:shadow-sm
+                                          active:translate-y-0 active:scale-95
+                                          transition-all duration-150">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                                    </svg>
+                                    <span>View Video</span>
+                                </a>
+                                #else:
+                                <!-- Photo thumbnail with zoom-on-hover -->
+                                <a href="#(report.mediaPath)" target="_blank"
+                                   class="group relative block w-10 h-10 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700 shadow-sm
+                                          hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-md
+                                          transition-all duration-150">
+                                    <img src="#(report.mediaPath)" alt="Evidence" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-200">
+                                </a>
+                                <a href="#(report.mediaPath)" target="_blank"
+                                   class="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:underline transition-colors duration-150">
+                                    View Photo
+                                </a>
+                                #endif
+                            </div>
+                            #else:
+                            <span class="text-xs text-slate-400 dark:text-slate-500 italic">No media</span>
+                            #endif
+                        </td>
+
+                        <!-- Date -->
+                        <td class="py-4 px-6 whitespace-nowrap text-xs text-slate-500 dark:text-slate-400">
+                            #(report.formattedDate)
+                        </td>
+
+                        <!-- Status Update Form -->
+                        <td class="py-4 px-6 whitespace-nowrap text-right">
+                            <form action="/reports/#(report.id)/status" method="POST" class="inline-flex items-center space-x-2">
+                                <select
+                                    name="status"
+                                    class="text-xs font-medium rounded-lg
+                                           border border-slate-300 dark:border-slate-700
+                                           py-1.5 px-2
+                                           bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200
+                                           focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-blue-500
+                                           hover:border-slate-400 dark:hover:border-slate-600
+                                           transition-all duration-150 cursor-pointer"
+                                >
+                                    <option value="Pending" #if(report.status.rawValue == "Pending"): selected #endif>Pending</option>
+                                    <option value="Under Investigation" #if(report.status.rawValue == "Under Investigation"): selected #endif>Under Investigation</option>
+                                    <option value="Resolved" #if(report.status.rawValue == "Resolved"): selected #endif>Resolved</option>
+                                </select>
+                                <!-- Update button: hover lift + ring -->
+                                <button
+                                    type="submit"
+                                    title="Update Status in Database"
+                                    class="px-2.5 py-1.5 rounded-lg text-xs font-bold text-white
+                                           bg-slate-800 dark:bg-slate-700
+                                           hover:bg-blue-600 dark:hover:bg-blue-600
+                                           hover:shadow-md hover:shadow-blue-500/25
+                                           hover:-translate-y-0.5
+                                           active:translate-y-0 active:scale-95
+                                           transition-all duration-200 shadow-sm"
+                                >
+                                    Update
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    #endfor
+                </tbody>
+            </table>
+        </div>
+        #endif
+    </div>
+
+</div>
+
+#endexport
+#endextend

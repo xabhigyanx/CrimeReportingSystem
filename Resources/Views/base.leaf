@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#(title) | ShieldWatch Crime Reporting</title>
+
+    <!-- Tailwind CSS via CDN — Dark mode enabled via class strategy -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            // 'class' strategy: dark mode activates by adding 'dark' class on <html>
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50:  '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        }
+                    },
+                    // Custom transition timing so every hover/dark-mode change feels smooth
+                    transitionProperty: {
+                        'colors': 'color, background-color, border-color, text-decoration-color, fill, stroke',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!--
+        Dark Mode Bootstrap Script — runs BEFORE page renders to prevent flash.
+        Checks localStorage for the saved theme; if 'dark', adds the 'dark' class
+        to <html> immediately so the page renders in the correct mode on first load.
+    -->
+    <script>
+        (function () {
+            const saved = localStorage.getItem('swTheme');
+            if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        })();
+    </script>
+</head>
+
+<!-- Light: slate-50 background  |  Dark: slate-950 background -->
+<body class="flex flex-col min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 antialiased selection:bg-blue-500 selection:text-white transition-colors duration-300">
+
+    <!-- ══════════════════════════════════════════════
+         TOP NAVIGATION HEADER
+         ══════════════════════════════════════════════ -->
+    <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+
+                <!-- Brand / Logo -->
+                <div class="flex items-center space-x-3">
+                    <a href="/" class="flex items-center space-x-2.5 group">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-700 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20 group-hover:scale-110 group-hover:shadow-blue-500/40 group-hover:shadow-lg transition-all duration-200">
+                            <!-- Shield Icon -->
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="text-xl font-bold tracking-tight text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">ShieldWatch</span>
+                            <span class="block text-xs font-medium text-blue-600 dark:text-blue-400 -mt-1">Swift &amp; Vapor Lab</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Desktop Nav Links -->
+                <nav class="hidden md:flex items-center space-x-1 lg:space-x-2 text-sm font-semibold">
+                    <a href="/" class="px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-800 active:scale-95 transition-all duration-150">Home</a>
+                    <a href="/dashboard" class="px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-800 active:scale-95 transition-all duration-150">Case Dashboard</a>
+                    <a href="/concerns" class="px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-800 active:scale-95 transition-all duration-150">Safety Alerts</a>
+                </nav>
+
+                <!-- Right-side Controls: Dark Mode Toggle + Report CTA -->
+                <div class="flex items-center space-x-2 sm:space-x-3">
+
+                    <!--
+                        DAY / NIGHT MODE TOGGLE BUTTON
+                        Clicking this toggles the 'dark' class on <html> and saves
+                        the preference to localStorage so it persists on page reload.
+                        The Sun and Moon icons swap visibility based on current mode.
+                    -->
+                    <button
+                        id="themeToggleBtn"
+                        onclick="toggleTheme()"
+                        aria-label="Toggle day/night mode"
+                        title="Toggle Day / Night Mode"
+                        class="relative w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-amber-400 hover:bg-blue-50 dark:hover:bg-slate-700 hover:border-blue-300 dark:hover:border-amber-500 hover:text-blue-600 hover:scale-110 hover:shadow-md dark:hover:shadow-amber-500/20 active:scale-95 transition-all duration-200"
+                    >
+                        <!-- Sun icon — shown in DARK mode (click to go light) -->
+                        <svg id="iconSun" class="hidden dark:block w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="5"/>
+                            <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                        </svg>
+                        <!-- Moon icon — shown in LIGHT mode (click to go dark) -->
+                        <svg id="iconMoon" class="block dark:hidden w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+                        </svg>
+                    </button>
+
+                    <!-- Report Incident CTA -->
+                    <a href="/report" class="inline-flex items-center space-x-2 px-4 py-2 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 shadow-md shadow-red-500/25 hover:shadow-lg hover:shadow-red-500/40 hover:-translate-y-0.5 active:translate-y-0 active:scale-95 transition-all duration-200">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                        </svg>
+                        <span class="hidden sm:inline">Report Incident</span>
+                        <span class="sm:hidden">Report</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ══════════════════════════════════════════════
+         GLOBAL FLASH NOTIFICATION BANNERS
+         ══════════════════════════════════════════════ -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 w-full">
+        #if(errorMessage):
+        <div class="flex items-center p-4 mb-4 text-sm text-red-800 dark:text-red-300 rounded-2xl bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-800 shadow-sm" role="alert">
+            <svg class="flex-shrink-0 w-5 h-5 mr-3 text-red-600 dark:text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+            </svg>
+            <span class="font-medium">Error:</span>&nbsp;#(errorMessage)
+        </div>
+        #endif
+
+        #if(successMessage):
+        <div class="flex items-center p-4 mb-4 text-sm text-emerald-800 dark:text-emerald-300 rounded-2xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 shadow-sm" role="alert">
+            <svg class="flex-shrink-0 w-5 h-5 mr-3 text-emerald-600 dark:text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+            </svg>
+            <span class="font-medium">Success:</span>&nbsp;#(successMessage)
+        </div>
+        #endif
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         MAIN PAGE CONTENT SLOT (filled by child pages)
+         ══════════════════════════════════════════════ -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        #import("content")
+    </main>
+
+    <!-- ══════════════════════════════════════════════
+         FOOTER
+         ══════════════════════════════════════════════ -->
+    <footer class="mt-auto border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Column 1: Brand Info -->
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-7 h-7 rounded-lg bg-blue-700 flex items-center justify-center text-white text-xs font-bold">SW</div>
+                        <span class="text-base font-bold text-slate-900 dark:text-white">ShieldWatch Incident System</span>
+                    </div>
+                    <p class="mt-2 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                        Engineered with Swift Vapor 4, SQLite via Fluent ORM, and Leaf Templating Engine for the iOS &amp; Server-Side Swift Lab.
+                    </p>
+                </div>
+
+                <!-- Column 2: Quick Links -->
+                <div>
+                    <h3 class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Navigation</h3>
+                    <ul class="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-400">
+                        <li><a href="/" class="hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition-colors duration-150">Home Portal</a></li>
+                        <li><a href="/report" class="hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition-colors duration-150">File Incident Report</a></li>
+                        <li><a href="/dashboard" class="hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition-colors duration-150">Real-time Case Tracker</a></li>
+                        <li><a href="/concerns" class="hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition-colors duration-150">Community Safety Feed</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: Emergency Contacts -->
+                <div>
+                    <h3 class="text-xs font-bold text-rose-600 uppercase tracking-wider flex items-center space-x-1.5">
+                        <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
+                        <span>Emergency Assistance</span>
+                    </h3>
+                    <div class="mt-3 p-3 bg-rose-50 dark:bg-rose-950/40 rounded-xl border border-rose-100 dark:border-rose-900 text-xs text-rose-900 dark:text-rose-300 space-y-1">
+                        <p><span class="font-semibold">Police Dispatch:</span> 911 / 112</p>
+                        <p><span class="font-semibold">Campus Security Hotline:</span> +1 (800) 555-SAFE</p>
+                        <p><span class="font-semibold">Anonymous Tip Line:</span> +1 (800) 555-TIPS</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 dark:text-slate-500">
+                <p>&copy; 2026 ShieldWatch. Built with Vapor 4 &amp; Swift 6.</p>
+                <p class="mt-2 sm:mt-0 font-medium text-slate-500 dark:text-slate-400">iOS Lab Mini-Project &bull; MVC Architecture</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ══════════════════════════════════════════════
+         DARK MODE TOGGLE SCRIPT
+         Toggles the 'dark' class on <html> and saves preference to localStorage.
+         ══════════════════════════════════════════════ -->
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const isDark = html.classList.toggle('dark');
+            // Persist the preference so theme survives page reloads
+            localStorage.setItem('swTheme', isDark ? 'dark' : 'light');
+        }
+    </script>
+
+</body>
+</html>
